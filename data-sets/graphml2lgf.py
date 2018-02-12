@@ -3,7 +3,7 @@ from pygraphml import GraphMLParser
 
 # data sets are from http://www.graphdrawing.org/data.html
 parser = GraphMLParser()
-g = parser.parse('./random-dag/g.100.1.graphml')
+g = parser.parse('./random-dag/g.400.12.graphml')
 
 
 with open('example.lgf', 'w') as fp:

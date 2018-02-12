@@ -37,7 +37,7 @@ namespace saber {
     class Grail {
     public:
 
-        explicit Grail(Graph &g) : _g(&g), _dim(5), _rank(1), _labels(_dim) {
+        explicit Grail(Graph &g) : _g(&g), _dim(5), _usePruning(true), _rank(1),_labels(_dim) {
 
             for (NodeIt ui(*_g);ui!=INVALID;++ui) {
                 size_t uid = _g->id(ui);
@@ -49,17 +49,18 @@ namespace saber {
                     _roots.push_back(uid);
                 }
             }
+#ifdef DEBUG
             std::cout << "roots : \n";
             for (auto v: _roots){
                 std::cout << v << " ";
             }
             std::cout << std::endl;
-
+#endif
         }
 
         void buildIndex(){
             randomizedLabeling();
-
+#ifdef DEBUG
             for (auto l: _labels[0])
                 std::cout << l.first
                           << " : ["
@@ -67,6 +68,7 @@ namespace saber {
                           << ", "
                           << (l.second).second
                           << "]\n";
+#endif
         }
 
         bool reachable(size_t u, size_t v) {
@@ -82,6 +84,13 @@ namespace saber {
                 children.push_back(_g->id(nu));
             }
             for (auto c: children) {
+                if (_usePruning) {
+                    for (size_t i = 0; i < _dim; ++i) {
+                        if (!contains(_labels[i][u], _labels[i][v])) {
+                            continue;
+                        }
+                    }
+                }
                 if (c == v || reachable(c, v)) return true;
             }
             return false;
@@ -90,6 +99,7 @@ namespace saber {
     private:
         Graph *_g;
         size_t _dim;
+        bool _usePruning;
         size_t _rank;
         std::unordered_map<size_t, bool> _visited;
         std::vector<std::unordered_map<size_t, Interval> > _labels;
