@@ -6,33 +6,16 @@
 #include <lemon/lgf_reader.h>
 
 using namespace lemon;
-typedef ListGraph Graph;
-typedef Graph::Node Node;
-typedef Graph::Arc Arc;
-using NodeIt = Graph::NodeIt;
-using ArcIt = Graph::ArcIt;
-using OutArcIt = Graph::OutArcIt;
-template <>
-std::vector<const Node *> getRoots(const Graph *g){
-    std::vector<const Node *> roots;
-    for (NodeIt i(*g);i!=INVALID;++i){
-        OutArcIt out(*g, i);
-        if (out == INVALID) roots.push_back(&i);
-    }
-    return roots;
-}
+
 
 int main()
 {
-<<<<<<< HEAD
 
-=======
     typedef ListDigraph Graph;
     typedef Graph::Node Node;
     typedef Graph::Arc Arc;
     using NodeIt = Graph::NodeIt;
     using ArcIt = Graph::ArcIt;
->>>>>>> 51054337c0226048e7ab8cd56da1ec03a5014ae8
     Graph g;
     std::string filename("example.lfg");
     try{
